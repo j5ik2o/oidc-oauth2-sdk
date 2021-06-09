@@ -1,6 +1,6 @@
 package com.github.j5ik2o.authnauthz.oauth2.code
 
-import com.github.j5ik2o.authnauthz.oauth2.GrantType
+import com.github.j5ik2o.authnauthz.oauth2.{ GrantType, TokenIssueRequest }
 import com.github.j5ik2o.authnauthz.{ AuthorizationCode, ClientId, RedirectURI }
 
 /** 認可コードフロー: アクセストークン・リクエスト
@@ -17,4 +17,4 @@ final case class TokenCodeIssueRequest(
     code: AuthorizationCode,
     redirectURI: RedirectURI,
     clientId: ClientId
-)
+) extends TokenIssueRequest

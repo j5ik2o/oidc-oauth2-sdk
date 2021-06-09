@@ -1,6 +1,7 @@
-package com.github.j5ik2o.authnauthz.oauth2
+package com.github.j5ik2o.authnauthz.oauth2.refresh
 
 import com.github.j5ik2o.authnauthz.RefreshToken
+import com.github.j5ik2o.authnauthz.oauth2.{ GrantType, Scopes }
 
 /** アクセストークン・更新リクエスト
   *
@@ -10,7 +11,7 @@ import com.github.j5ik2o.authnauthz.RefreshToken
   * @param refreshToken
   * @param scopes
   */
-final case class TokenUpdateRequest(
+final case class TokenRefreshRequest(
     grantType: GrantType,
     refreshToken: RefreshToken,
     scopes: Scopes

@@ -11,7 +11,7 @@ import com.github.j5ik2o.authnauthz.{ AccessToken, RefreshToken }
 
 import scala.concurrent.duration.Duration
 
-sealed trait TokenSuccessfulResponse extends TokenResponse
+sealed trait TokenCodeIssueResponse extends TokenResponse
 
 final case class TokenCodeIssueSuccessfulResponse(
     override val accessToken: AccessToken,
@@ -20,11 +20,11 @@ final case class TokenCodeIssueSuccessfulResponse(
     refreshToken: Option[RefreshToken],
     override val scopes: Scopes
 ) extends AbstractTokenSuccessfulResponse(accessToken, tokenType, expiresIn, scopes)
-    with TokenSuccessfulResponse
+    with TokenCodeIssueResponse
 
 final case class TokenCodeIssueFailureResponse(
     override val error: ErrorType,
     override val errorDescription: Option[String],
     override val errorUri: Option[String]
 ) extends AbstractTokenFailureResponse(error, errorDescription, errorUri)
-    with TokenSuccessfulResponse
+    with TokenCodeIssueResponse

@@ -8,4 +8,4 @@ abstract class AbstractAuthorizationRequest(
     val redirectURI: RedirectURI,
     val scopes: Scopes,
     val state: State
-)
+) extends AuthorizationRequest
