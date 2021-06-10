@@ -1,6 +1,5 @@
 package com.github.j5ik2o.authnauthz.oauth2
 
-import com.github.j5ik2o.authnauthz.base
 import enumeratum._
 
 sealed abstract class ResponseType(override val entryName: String) extends EnumEntry
@@ -13,4 +12,4 @@ object ResponseType extends Enum[ResponseType] {
 
 }
 
-final case class ResponseTypes(values: Set[ResponseType]) extends base.ResponseTypes
+final case class ResponseTypes(values: Set[ResponseType])

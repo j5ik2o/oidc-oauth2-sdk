@@ -1,9 +1,8 @@
 package com.github.j5ik2o.authnauthz.oauth2
 
-import com.github.j5ik2o.authnauthz.base
 import enumeratum._
 
-sealed abstract class ErrorType(override val entryName: String) extends EnumEntry with base.ErrorType
+sealed abstract class ErrorType(override val entryName: String) extends EnumEntry
 
 object ErrorType extends Enum[ErrorType] {
   override def values: IndexedSeq[ErrorType] = findValues

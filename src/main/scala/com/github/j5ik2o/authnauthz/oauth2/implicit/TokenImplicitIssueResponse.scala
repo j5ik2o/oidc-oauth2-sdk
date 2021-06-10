@@ -1,8 +1,6 @@
 package com.github.j5ik2o.authnauthz.oauth2.`implicit`
 
 import com.github.j5ik2o.authnauthz.oauth2.{
-  AbstractTokenFailureResponse,
-  AbstractTokenSuccessfulResponse,
   AccessToken,
   ErrorDescription,
   ErrorType,
@@ -25,13 +23,12 @@ sealed trait TokenImplicitIssueResponse extends TokenResponse
   * @param state
   */
 final case class TokenImplicitIssueSuccessfulResponse(
-    override val accessToken: AccessToken,
-    override val tokenType: String,
-    override val expiresIn: Duration,
-    override val scopes: Scopes,
+    accessToken: AccessToken,
+    tokenType: String,
+    expiresIn: Duration,
+    scopes: Scopes,
     state: State
-) extends AbstractTokenSuccessfulResponse(accessToken, tokenType, expiresIn, scopes)
-    with TokenImplicitIssueResponse
+) extends TokenImplicitIssueResponse
 
 /** インプリシットフロー: アクセストークン・エラーレスポンス
   *
@@ -40,9 +37,8 @@ final case class TokenImplicitIssueSuccessfulResponse(
   * @param errorUri
   */
 final case class TokenImplicitIssueFailureResponse(
-    override val error: ErrorType,
-    override val errorDescription: Option[ErrorDescription],
-    override val errorUri: Option[ErrorUri],
+    error: ErrorType,
+    errorDescription: Option[ErrorDescription],
+    errorUri: Option[ErrorUri],
     state: State
-) extends AbstractTokenFailureResponse(error, errorDescription, errorUri)
-    with TokenImplicitIssueResponse
+) extends TokenImplicitIssueResponse

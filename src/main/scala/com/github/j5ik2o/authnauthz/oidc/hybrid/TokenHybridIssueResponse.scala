@@ -9,18 +9,16 @@ import scala.concurrent.duration.Duration
 sealed trait TokenHybridIssueResponse
 
 final case class TokenHybridIssueSuccessfulResponse(
-    override val accessToken: oauth2.AccessToken,
-    override val tokenType: String,
+    accessToken: oauth2.AccessToken,
+    tokenType: String,
     refreshToken: Option[oauth2.RefreshToken],
-    override val expiresIn: Duration,
-    override val idToken: IdToken,
+    expiresIn: Duration,
+    idToken: IdToken,
     scope: Scopes
-) extends AbstractTokenSuccessfulResponse(accessToken, tokenType, expiresIn, idToken, scope)
-    with TokenHybridIssueResponse
+) extends TokenHybridIssueResponse
 
 final case class TokenHybridIssueFailureResponse(
-    override val error: ErrorType,
-    override val errorDescription: Option[ErrorDescription],
-    override val errorUri: Option[ErrorUri]
-) extends oauth2.AbstractTokenFailureResponse(error, errorDescription, errorUri)
-    with TokenHybridIssueResponse
+    error: ErrorType,
+    errorDescription: Option[ErrorDescription],
+    errorUri: Option[ErrorUri]
+) extends TokenHybridIssueResponse

@@ -1,14 +1,14 @@
 package com.github.j5ik2o.authnauthz.oidc.code
 
-import com.github.j5ik2o.authnauthz.{ base, oauth2, oidc }
+import com.github.j5ik2o.authnauthz.{ oauth2, oidc }
 
 final case class AuthenticationCodeRequest(
     // OAuth2
-    override val responseTypes: oidc.ResponseTypes,
-    override val clientId: oauth2.ClientId,
-    override val redirectURI: oauth2.RedirectURI,
-    override val scopes: oidc.Scopes,
-    override val state: Option[oauth2.State],
+    responseTypes: oidc.ResponseTypes,
+    clientId: oauth2.ClientId,
+    redirectURI: oauth2.RedirectURI,
+    scopes: oidc.Scopes,
+    state: Option[oauth2.State],
     // OpenID Connect
     responseMode: Option[oidc.ResponseMode],
     display: Option[oidc.Display],
@@ -18,6 +18,4 @@ final case class AuthenticationCodeRequest(
     idTokenHint: Option[oidc.IdTokenHint],
     loginHint: Option[oidc.LoginHint],
     acrValues: Option[oidc.AcrValues]
-) extends oauth2.AbstractAuthorizationRequest(responseTypes, clientId, redirectURI, scopes, state)
-    with base.AuthorizationCodeBaseRequest
-    with oidc.AuthenticationRequest
+)

@@ -1,8 +1,6 @@
 package com.github.j5ik2o.authnauthz.oauth2.refresh
 
 import com.github.j5ik2o.authnauthz.oauth2.{
-  AbstractTokenFailureResponse,
-  AbstractTokenSuccessfulResponse,
   AccessToken,
   ErrorDescription,
   ErrorType,
@@ -27,17 +25,15 @@ sealed trait TokenRefreshResponse extends TokenResponse
   * @param scopes
   */
 final case class TokenRefreshSuccessfulResponse(
-    override val accessToken: AccessToken,
-    override val tokenType: String,
-    override val expiresIn: Duration,
+    accessToken: AccessToken,
+    tokenType: String,
+    expiresIn: Duration,
     refreshToken: Option[RefreshToken],
-    override val scopes: Scopes
-) extends AbstractTokenSuccessfulResponse(accessToken, tokenType, expiresIn, scopes)
-    with TokenRefreshResponse
+    scopes: Scopes
+) extends TokenRefreshResponse
 
 final case class TokenRefreshFailureResponse(
-    override val error: ErrorType,
-    override val errorDescription: Option[ErrorDescription],
-    override val errorUri: Option[ErrorUri]
-) extends AbstractTokenFailureResponse(error, errorDescription, errorUri)
-    with TokenRefreshResponse
+    error: ErrorType,
+    errorDescription: Option[ErrorDescription],
+    errorUri: Option[ErrorUri]
+) extends TokenRefreshResponse
