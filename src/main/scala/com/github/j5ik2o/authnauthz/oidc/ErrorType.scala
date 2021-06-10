@@ -8,6 +8,7 @@ sealed abstract class ErrorType(override val entryName: String)
 
 object ErrorType extends Enum[ErrorType] {
   override def values: IndexedSeq[ErrorType] = findValues
+  // OAuth2
   case object InvalidRequest          extends ErrorType("invalid_request")
   case object UnauthorizedClient      extends ErrorType("unauthorized_client")
   case object AccessDenied            extends ErrorType("access_denied")
@@ -15,7 +16,7 @@ object ErrorType extends Enum[ErrorType] {
   case object InvalidScope            extends ErrorType("invalid_scope")
   case object ServerError             extends ErrorType("server_error")
   case object TemporarilyUnavailable  extends ErrorType("temporarily_unavailable")
-  //
+  // OpenID Connect
   case object InteractionRequired      extends ErrorType("interaction_required")
   case object LoginRequired            extends ErrorType("login_required")
   case object AccountSelectionRequired extends ErrorType("account_selection_required")

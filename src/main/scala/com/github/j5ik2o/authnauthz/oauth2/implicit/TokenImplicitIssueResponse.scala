@@ -15,10 +15,10 @@ sealed trait TokenImplicitIssueResponse extends TokenResponse
 
 /** インプリシットフロー: アクセストークン・レスポンス
   *
-  * @param accessToken
-  * @param tokenType
+  * @param accessToken [[AccessToken]]
+  * @param tokenType [[]]
   * @param expiresIn
-  * @param scopes
+  * @param scopes [[Scopes]]
   * @param state
   */
 final case class TokenImplicitIssueSuccessfulResponse(

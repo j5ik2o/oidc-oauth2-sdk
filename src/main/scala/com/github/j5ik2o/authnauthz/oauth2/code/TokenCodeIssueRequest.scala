@@ -17,4 +17,6 @@ final case class TokenCodeIssueRequest(
     code: AuthorizationCode,
     redirectURI: RedirectURI,
     clientId: ClientId
-) extends TokenIssueRequest
+) extends TokenIssueRequest {
+  require(grantType == GrantType.AuthorizationCode)
+}
