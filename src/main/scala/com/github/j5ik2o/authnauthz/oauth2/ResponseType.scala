@@ -12,4 +12,4 @@ object ResponseType extends Enum[ResponseType] {
 
 }
 
-final case class ResponseTypes(values: Set[ResponseType])
+final case class ResponseTypes(values: Set[ResponseType]) extends com.github.j5ik2o.authnauthz.ResponseTypes

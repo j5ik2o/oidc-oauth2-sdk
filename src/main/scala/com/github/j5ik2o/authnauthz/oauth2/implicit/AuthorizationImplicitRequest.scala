@@ -8,7 +8,7 @@ final case class AuthorizationImplicitRequest(
     override val clientId: ClientId,
     override val redirectURI: RedirectURI,
     override val scopes: Scopes,
-    override val state: State
+    override val state: Option[State]
 ) extends AbstractAuthorizationRequest(responseTypes, clientId, redirectURI, scopes, state) {
   require(responseTypes.values.contains(ResponseType.Token))
 }
