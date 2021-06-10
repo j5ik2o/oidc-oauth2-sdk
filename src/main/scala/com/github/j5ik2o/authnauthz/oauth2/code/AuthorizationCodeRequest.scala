@@ -1,41 +1,15 @@
 package com.github.j5ik2o.authnauthz.oauth2.code
 
-import com.github.j5ik2o.authnauthz.base.AuthorizationCodeBaseRequest
-import com.github.j5ik2o.authnauthz.oauth2.{
-  AbstractAuthorizationRequest,
-  AuthorizationRequest,
-  ClientId,
-  RedirectURI,
-  ResponseType,
-  ResponseTypes,
-  Scopes,
-  State
-}
+import com.github.j5ik2o.authnauthz.base
+import com.github.j5ik2o.authnauthz.oauth2._
 
-trait AuthorizationCodeRequest extends AuthorizationCodeBaseRequest {
-  override val responseTypes: ResponseTypes
-  override val scopes: Scopes
-}
-
-object AuthorizationCodeRequest {
-
-  def apply(
-      responseTypes: ResponseTypes,
-      clientId: ClientId,
-      redirectURI: RedirectURI,
-      scopes: Scopes,
-      state: Option[State]
-  ): AuthorizationCodeRequest = AuthorizationCodeRequestImpl(responseTypes, clientId, redirectURI, scopes, state)
-
-}
-
-final case class AuthorizationCodeRequestImpl(
+final case class AuthorizationCodeRequest(
     override val responseTypes: ResponseTypes,
     override val clientId: ClientId,
     override val redirectURI: RedirectURI,
     override val scopes: Scopes,
     override val state: Option[State]
 ) extends AbstractAuthorizationRequest(responseTypes, clientId, redirectURI, scopes, state)
-    with AuthorizationCodeRequest {
+    with base.AuthorizationCodeBaseRequest {
   require(responseTypes.values.contains(ResponseType.Code))
 }
