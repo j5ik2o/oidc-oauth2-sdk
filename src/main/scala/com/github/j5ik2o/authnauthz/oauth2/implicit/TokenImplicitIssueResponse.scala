@@ -3,11 +3,14 @@ package com.github.j5ik2o.authnauthz.oauth2.`implicit`
 import com.github.j5ik2o.authnauthz.oauth2.{
   AbstractTokenFailureResponse,
   AbstractTokenSuccessfulResponse,
+  AccessToken,
+  ErrorDescription,
   ErrorType,
+  ErrorUri,
   Scopes,
+  State,
   TokenResponse
 }
-import com.github.j5ik2o.authnauthz.{ AccessToken, State }
 
 import scala.concurrent.duration.Duration
 
@@ -38,8 +41,8 @@ final case class TokenImplicitIssueSuccessfulResponse(
   */
 final case class TokenImplicitIssueFailureResponse(
     override val error: ErrorType,
-    override val errorDescription: Option[String],
-    override val errorUri: Option[String],
+    override val errorDescription: Option[ErrorDescription],
+    override val errorUri: Option[ErrorUri],
     state: State
 ) extends AbstractTokenFailureResponse(error, errorDescription, errorUri)
     with TokenImplicitIssueResponse

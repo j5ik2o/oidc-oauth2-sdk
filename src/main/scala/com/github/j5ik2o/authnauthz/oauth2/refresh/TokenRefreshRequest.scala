@@ -1,7 +1,6 @@
 package com.github.j5ik2o.authnauthz.oauth2.refresh
 
-import com.github.j5ik2o.authnauthz.RefreshToken
-import com.github.j5ik2o.authnauthz.oauth2.{ GrantType, Scopes }
+import com.github.j5ik2o.authnauthz.oauth2.{ GrantType, RefreshToken, Scopes }
 
 /** アクセストークン・更新リクエスト
   *

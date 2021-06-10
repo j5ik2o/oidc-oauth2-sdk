@@ -1,7 +1,7 @@
 package com.github.j5ik2o.authnauthz.oidc.hybrid
 
 import com.github.j5ik2o.authnauthz.oidc._
-import com.github.j5ik2o.authnauthz.{ AccessToken, RefreshToken }
+import com.github.j5ik2o.authnauthz.oauth2.{ AccessToken, RefreshToken }
 
 import scala.concurrent.duration.Duration
 

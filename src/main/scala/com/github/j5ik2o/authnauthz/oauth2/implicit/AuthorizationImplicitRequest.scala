@@ -1,7 +1,14 @@
 package com.github.j5ik2o.authnauthz.oauth2.`implicit`
 
-import com.github.j5ik2o.authnauthz.oauth2.{ AbstractAuthorizationRequest, ResponseType, ResponseTypes, Scopes }
-import com.github.j5ik2o.authnauthz.{ ClientId, RedirectURI, State }
+import com.github.j5ik2o.authnauthz.oauth2.{
+  AbstractAuthorizationRequest,
+  ClientId,
+  RedirectURI,
+  ResponseType,
+  ResponseTypes,
+  Scopes,
+  State
+}
 
 final case class AuthorizationImplicitRequest(
     override val responseTypes: ResponseTypes,

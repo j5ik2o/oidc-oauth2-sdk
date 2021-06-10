@@ -1,25 +1,23 @@
 package com.github.j5ik2o.authnauthz.oidc.code
 
-import com.github.j5ik2o.authnauthz.oauth2.code.AuthorizationCodeBaseRequest
-import com.github.j5ik2o.authnauthz.oauth2.AbstractAuthorizationRequest
-import com.github.j5ik2o.authnauthz.oidc._
-import com.github.j5ik2o.authnauthz.{ ClientId, RedirectURI, State }
+import com.github.j5ik2o.authnauthz.{ base, oauth2, oidc }
 
 final case class AuthenticationCodeRequest(
     // OAuth2
-    override val responseTypes: ResponseTypes,
-    override val clientId: ClientId,
-    override val redirectURI: RedirectURI,
-    override val scopes: Scopes,
-    override val state: Option[State],
+    override val responseTypes: oidc.ResponseTypes,
+    override val clientId: oauth2.ClientId,
+    override val redirectURI: oauth2.RedirectURI,
+    override val scopes: oidc.Scopes,
+    override val state: Option[oauth2.State],
     // OpenID Connect
-    responseMode: Option[ResponseMode],
-    display: Option[Display],
-    prompt: Option[Prompt],
-    maxAge: Option[MaxAge],
-    uiLocales: Option[UILocales],
-    idTokenHint: Option[IdTokenHint],
-    loginHint: Option[LoginHint],
-    acrValues: Option[AcrValues]
-) extends AbstractAuthorizationRequest(responseTypes, clientId, redirectURI, scopes, state)
-    with AuthorizationCodeBaseRequest
+    responseMode: Option[oidc.ResponseMode],
+    display: Option[oidc.Display],
+    prompt: Option[oidc.Prompt],
+    maxAge: Option[oidc.MaxAge],
+    uiLocales: Option[oidc.UILocales],
+    idTokenHint: Option[oidc.IdTokenHint],
+    loginHint: Option[oidc.LoginHint],
+    acrValues: Option[oidc.AcrValues]
+) extends oauth2.AbstractAuthorizationRequest(responseTypes, clientId, redirectURI, scopes, state)
+    with base.AuthorizationCodeBaseRequest
+    with oidc.AuthenticationRequest

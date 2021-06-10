@@ -1,20 +1,15 @@
 package com.github.j5ik2o.authnauthz.oauth2.code
 
-import com.github.j5ik2o.authnauthz.{ ClientId, RedirectURI, State }
+import com.github.j5ik2o.authnauthz.base.AuthorizationCodeBaseRequest
 import com.github.j5ik2o.authnauthz.oauth2.{
   AbstractAuthorizationRequest,
   AuthorizationRequest,
+  ClientId,
+  RedirectURI,
   ResponseType,
   ResponseTypes,
-  Scopes
-}
-
-trait AuthorizationCodeBaseRequest extends AuthorizationRequest {
-  val responseTypes: com.github.j5ik2o.authnauthz.ResponseTypes
-  val clientId: ClientId
-  val redirectURI: RedirectURI
-  val scopes: com.github.j5ik2o.authnauthz.Scopes
-  val state: Option[State]
+  Scopes,
+  State
 }
 
 trait AuthorizationCodeRequest extends AuthorizationCodeBaseRequest {

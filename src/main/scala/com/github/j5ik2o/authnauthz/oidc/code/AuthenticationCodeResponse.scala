@@ -1,12 +1,13 @@
 package com.github.j5ik2o.authnauthz.oidc.code
 
-import com.github.j5ik2o.authnauthz.oauth2.code.{
+import com.github.j5ik2o.authnauthz.oidc.ErrorType
+import com.github.j5ik2o.authnauthz._
+import com.github.j5ik2o.authnauthz.base.{
   AuthorizationCodeBaseResponse,
   AuthorizationFailureCodeBaseResponse,
   AuthorizationSuccessfulCodeBaseResponse
 }
-import com.github.j5ik2o.authnauthz.oidc.ErrorType
-import com.github.j5ik2o.authnauthz.{ AuthorizationCode, State }
+import com.github.j5ik2o.authnauthz.oauth2.{ AuthorizationCode, State }
 
 sealed trait AuthenticationCodeResponse extends AuthorizationCodeBaseResponse
 

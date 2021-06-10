@@ -1,5 +1,6 @@
 package com.github.j5ik2o.authnauthz.oidc
 
+import com.github.j5ik2o.authnauthz.base
 import enumeratum._
 
 sealed abstract class Scope(override val entryName: String) extends EnumEntry
@@ -11,4 +12,4 @@ object Scope extends Enum[Scope] {
   case class Value(value: String) extends Scope(value)
 }
 
-final case class Scopes(values: Seq[Scope]) extends com.github.j5ik2o.authnauthz.Scopes
+final case class Scopes(values: Seq[Scope]) extends base.Scopes

@@ -1,8 +1,7 @@
 package com.github.j5ik2o.authnauthz.oidc.hybrid
 
-import com.github.j5ik2o.authnauthz.oauth2.GrantType
+import com.github.j5ik2o.authnauthz.oauth2.{ AuthorizationCode, ClientId, GrantType, RedirectURI }
 import com.github.j5ik2o.authnauthz.oidc.TokenIssueRequest
-import com.github.j5ik2o.authnauthz.{ AuthorizationCode, ClientId, RedirectURI }
 
 final case class TokenHybridIssueRequest(
     grantType: GrantType,

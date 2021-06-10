@@ -1,6 +1,6 @@
 package com.github.j5ik2o.authnauthz.oidc
 
-import com.github.j5ik2o.authnauthz.AccessToken
+import com.github.j5ik2o.authnauthz.oauth2.AccessToken
 
 import scala.concurrent.duration.Duration
 

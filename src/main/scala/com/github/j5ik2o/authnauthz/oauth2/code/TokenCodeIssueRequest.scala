@@ -1,7 +1,6 @@
 package com.github.j5ik2o.authnauthz.oauth2.code
 
-import com.github.j5ik2o.authnauthz.oauth2.{ GrantType, TokenIssueRequest }
-import com.github.j5ik2o.authnauthz.{ AuthorizationCode, ClientId, RedirectURI }
+import com.github.j5ik2o.authnauthz.oauth2.{ AuthorizationCode, ClientId, GrantType, RedirectURI, TokenIssueRequest }
 
 /** 認可コードフロー: アクセストークン・リクエスト
   *

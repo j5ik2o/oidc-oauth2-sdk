@@ -1,7 +1,5 @@
 package com.github.j5ik2o.authnauthz.oauth2
 
-import com.github.j5ik2o.authnauthz.AccessToken
-
 import scala.concurrent.duration.Duration
 
 abstract class AbstractTokenSuccessfulResponse(

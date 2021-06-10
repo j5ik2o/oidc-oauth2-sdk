@@ -1,8 +1,7 @@
 package com.github.j5ik2o.authnauthz.oidc.hybrid
 
-import com.github.j5ik2o.authnauthz.oauth2.AbstractAuthorizationRequest
+import com.github.j5ik2o.authnauthz.oauth2.{ AbstractAuthorizationRequest, ClientId, RedirectURI, State }
 import com.github.j5ik2o.authnauthz.oidc._
-import com.github.j5ik2o.authnauthz.{ ClientId, RedirectURI, State }
 
 final case class AuthenticationHybridRequest(
     // OAuth2

@@ -1,10 +1,12 @@
 package com.github.j5ik2o.authnauthz.oauth2.resourceOwnerPassword
 
-import com.github.j5ik2o.authnauthz.AccessToken
 import com.github.j5ik2o.authnauthz.oauth2.{
   AbstractTokenFailureResponse,
   AbstractTokenSuccessfulResponse,
+  AccessToken,
+  ErrorDescription,
   ErrorType,
+  ErrorUri,
   Scopes,
   TokenResponse
 }
@@ -23,7 +25,7 @@ final case class TokenResourceOwnerPasswordIssueSuccessfulResponse(
 
 final case class TokenResourceOwnerPasswordIssueFailureResponse(
     override val error: ErrorType,
-    override val errorDescription: Option[String],
-    override val errorUri: Option[String]
+    override val errorDescription: Option[ErrorDescription],
+    override val errorUri: Option[ErrorUri]
 ) extends AbstractTokenFailureResponse(error, errorDescription, errorUri)
     with TokenResourceOwnerPasswordIssueResponse

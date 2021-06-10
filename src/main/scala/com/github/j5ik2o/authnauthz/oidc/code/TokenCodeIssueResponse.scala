@@ -1,16 +1,16 @@
 package com.github.j5ik2o.authnauthz.oidc.code
 
 import com.github.j5ik2o.authnauthz.oidc._
-import com.github.j5ik2o.authnauthz.{ AccessToken, RefreshToken, State }
+import com.github.j5ik2o.authnauthz.oauth2
 
 import scala.concurrent.duration.Duration
 
-sealed trait TokenCodeIssueResponse
+sealed trait TokenCodeIssueResponse extends TokenResponse
 
 final case class TokenCodeIssueSuccessfulResponse(
-    override val accessToken: AccessToken,
+    override val accessToken: oauth2.AccessToken,
     override val tokenType: String,
-    refreshToken: Option[RefreshToken],
+    refreshToken: Option[oauth2.RefreshToken],
     override val expiresIn: Duration,
     override val idToken: IdToken,
     scope: Scopes

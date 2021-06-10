@@ -1,6 +1,6 @@
 package com.github.j5ik2o.authnauthz.oidc.`implicit`
 
-import com.github.j5ik2o.authnauthz.{ AccessToken, State }
+import com.github.j5ik2o.authnauthz.oauth2.{ AccessToken, State }
 import com.github.j5ik2o.authnauthz.oidc.{
   AbstractTokenFailureResponse,
   AbstractTokenSuccessfulResponse,
