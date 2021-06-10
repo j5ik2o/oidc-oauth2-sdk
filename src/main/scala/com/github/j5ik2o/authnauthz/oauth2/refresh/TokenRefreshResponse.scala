@@ -7,7 +7,8 @@ import com.github.j5ik2o.authnauthz.oauth2.{
   ErrorUri,
   RefreshToken,
   Scopes,
-  TokenResponse
+  TokenResponse,
+  TokenType
 }
 
 import scala.concurrent.duration.Duration
@@ -26,7 +27,7 @@ sealed trait TokenRefreshResponse extends TokenResponse
   */
 final case class TokenRefreshSuccessfulResponse(
     accessToken: AccessToken,
-    tokenType: String,
+    tokenType: TokenType,
     expiresIn: Duration,
     refreshToken: Option[RefreshToken],
     scopes: Scopes

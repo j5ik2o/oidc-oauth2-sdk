@@ -9,7 +9,7 @@ trait TokenImplicitIssueResponse
 
 final case class TokenImplicitIssueSuccessfulResponse(
     accessToken: oauth2.AccessToken,
-    tokenType: String,
+    tokenType: oauth2.TokenType,
     expiresIn: Duration,
     idToken: IdToken,
     scopes: Scopes,
