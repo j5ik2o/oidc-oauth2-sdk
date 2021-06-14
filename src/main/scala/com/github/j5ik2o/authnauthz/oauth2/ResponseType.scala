@@ -12,4 +12,29 @@ object ResponseType extends Enum[ResponseType] {
 
 }
 
-final case class ResponseTypes(values: Set[ResponseType])
+final case class ResponseTypes(values: Set[ResponseType]) {
+  require(values.nonEmpty, "values is empty.")
+}
+
+object ResponseTypes {
+
+  def apply(values: ResponseType*): ResponseTypes = {
+    new ResponseTypes(values.toSet)
+  }
+
+  def parse(text: Option[String]): Either[OAuth2Exception, ResponseTypes] = {
+    text match {
+      case None =>
+        Left(new OAuth2Exception(ErrorType.InvalidRequest))
+      case Some("") =>
+        Left(new OAuth2Exception(ErrorType.InvalidRequest))
+      case Some(values) =>
+        val responseTypeTexts = values.split(" ")
+        if (!responseTypeTexts.exists(ResponseType.values.contains))
+          Left(new OAuth2Exception(ErrorType.UnsupportedResponseType))
+        else
+          Right(ResponseTypes(responseTypeTexts.map(ResponseType.withName).toSet))
+    }
+  }
+
+}
