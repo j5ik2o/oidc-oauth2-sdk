@@ -5,7 +5,7 @@ import com.github.j5ik2o.uri.Uri
 import java.text.ParseException
 
 class RedirectUri(val uri: Uri) {
-  def isFull: Boolean    = uri.query.nonEmpty
+  def isFull: Boolean    = uri.path.nonEmpty || uri.query.nonEmpty
   def isPartial: Boolean = uri.path.isEmpty || uri.query.isEmpty
 
   def canEqual(obj: Any): Boolean = obj.isInstanceOf[RedirectUri]
