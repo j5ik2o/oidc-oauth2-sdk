@@ -1,7 +1,10 @@
 package com.github.j5ik2o.authnauthz.oauth2
 
+import com.github.j5ik2o.authnauthz.oauth2.code.AuthorizationCodeRequest
 import org.scalatest.freespec.AnyFreeSpec
 
+/** https://openid-foundation-japan.github.io/rfc6749.ja.html
+  */
 class OAuth2Spec extends AnyFreeSpec {
 
   "2. クライアント登録" - {
@@ -165,7 +168,7 @@ class OAuth2Spec extends AnyFreeSpec {
         assert(ResponseTypes.parse(Some("token code")) == Right(ResponseTypes(ResponseType.Code, ResponseType.Token)))
 
       }
-      "3.1.2.  リダイレクトエンドポイント" in {
+      "3.1.2.  リダイレクトエンドポイント" - {
 
         /** リソースオーナーとのやりとりが完了した後, 認可サーバーはリソースオーナーのユーザーエージェントをクライアントへ誘導する.
           * 認可サーバーは, ユーザーエージェントを事前登録済もしくは認可リクエスト時に指定されたクライアントのリダイレクトエンドポイントにリダイレクトさせる.
@@ -173,6 +176,138 @@ class OAuth2Spec extends AnyFreeSpec {
           * リダイレクトエンドポイントのURIは [RFC3986] のセクション4.3で定義されている絶対URIでなければいけない (MUST). エンドポイントURIは application/x-www-form-urlencoded (Appendix B) フォーマットのクエリーコンポーネント ([RFC3986] セクション3.4) を含んでもよい (MAY).
           * クエリーパラメーターを追加する際, ここで指定されたクエリーコンポーネントは維持すること (MUST). エンドポイントURIはフラグメントコンポーネントを含んではいけない (MUST NOT).
           */
+        "3.1.2.1.  エンドポイントリクエストの機密性" in {
+
+          /** リダイレクトエンドポイントは, リクエストされたレスポンスタイプが code または token である場合, およびリダイレクトリクエストによってオープンネットワーク上にセンシティブなクレデンシャルが転送されることになる場合は, Section 1.6 に記載されているTLSを要求するべきである (SHOULD).
+            * 本仕様作成時点においてクライアントがTLS対応するのは多くの開発者にとって大きな障害となることから, 本仕様ではTLSの使用を強制はしない. TLSが利用できない場合, 認可サーバーはリダイレクト前にリソースオーナーに対して安全でないエンドポイントであることを警告するべきである (SHOULD). (例えば, 認可リクエスト時にメッセージを表示する)
+            *
+            * トランスポート層のセキュリティの欠如は, クライアントのセキュリティ, およびアクセス認可対象の保護リソースのセキュリティに, 深刻な影響を及ぼす.
+            * トランスポート層のセキュリティは, クライアントが認可プロセスをエンドユーザー認証の委譲の為に利用する場合に, 特に重要である. (例えばサードパーティーサインインサービス)
+            */
+        }
+        "3.1.2.2.  登録要件" in {
+
+          /** 認可サーバーは, 以下のようなクライアントに対してリダイレクトエンドポイントの事前登録を要求すること (MUST):
+            *
+            * - パブリッククライアント.
+            * - インプリシットグラントタイプを利用するコンフィデンシャルクライアント.
+            *
+            * 認可サーバーは, すべてのクライアントに対して, 認可エンドポイントアクセス前にリダイレクトURIの事前登録を要求すべきである (SHOULD).
+            *
+            * 認可サーバーは, クライアントに (一部分ではなく) 完全なリダイレクトURIの登録を要求するべきである (SHOULD).
+            * (クライアントはリクエスト毎のカスタマイズするために state リクエストパラメーターを使用できる (MAY))
+            * 完全なリダイレクトURIの登録を要求することができない場合, 認可サーバーはURIスキーム, オーソリティー, パス (認可要求の時,
+            * リダイレクトURIのクエリーコンポーネントのみ動的に変更を許可する) の登録を要求するべきである (SHOULD).
+            *
+            * 認可サーバーはクライアントに複数のリダイレクトエンドポイントの登録を許可してもよい (MAY).
+            *
+            * リダイレクトURI登録が不要な場合, 攻撃者に認可エンドポイントを Section 10.15 に記載されているオープンリダイレクターとして利用されてしまうおそれがある.
+            */
+        }
+        "3.1.2.3.  動的設定" in {
+
+          /** リダイレクトURIが複数登録されている場合, リダイレクトURIの一部のみが登録されている場合, もしくはリダイレクトURIが登録されていない場合,
+            * クライアントは redirect_uri リクエストパラメーターを使用して認可リクエストにリダイレクトURIを含めなければいけない (MUST).
+            */
+          assert(
+            Client(
+              ClientId(),
+              ClientType.Confidential,
+              ClientSecret("XXX"),
+              RedirectUris(
+                Vector(
+                  RedirectUri.parseWithException("http://localhost/test1"),
+                  RedirectUri.parseWithException("http://localhost/test2")
+                )
+              )
+            ).mustRedirectUri
+          )
+          assert(
+            Client(
+              ClientId(),
+              ClientType.Confidential,
+              ClientSecret("XXX"),
+              RedirectUris(
+                Vector(
+                  RedirectUri.parseWithException("http://localhost")
+                )
+              )
+            ).mustRedirectUri
+          )
+          assert(
+            Client(ClientId(), ClientType.Confidential, ClientSecret("XXX"), RedirectUris(Vector.empty)).mustRedirectUri
+          )
+
+          {
+            val authorizationCodeRequest = AuthorizationCodeRequest(
+              ResponseTypes(ResponseType.Code),
+              ClientId(),
+              Some(RedirectUri.parseWithException("http://localhost/test1")),
+              Scopes.empty,
+              None
+            )
+            val client = Client(
+              ClientId(),
+              ClientType.Confidential,
+              ClientSecret("XXX"),
+              RedirectUris(
+                Vector(
+                  RedirectUri.parseWithException("http://localhost/test1"),
+                  RedirectUri.parseWithException("http://localhost/test2")
+                )
+              )
+            )
+            assert(authorizationCodeRequest.validateRedirectUri(client))
+          }
+
+          /** 認可リクエスト中にリダイレクトURIが含まれており, かつリダイレクトURIが事前登録されている場合, [RFC3986] セクション6に示すとおり,
+            * 認可サーバーは認可リクエストに含まれる値を登録済リダイレクトURI (もしくはURIコンポーネント) と比較し, 少なくとも1つと一致することを確認しなければならない (MUST).
+            * もしクライアントの登録にフルのリダイレクトURIが含まれていた場合, 認可サーバーは [RFC3986] セクション6.2.1.で定義されているように単純な文字列比較を使用し二つのURIを比較しなければいけない (MUST).
+            */
+          {
+            val req = AuthorizationCodeRequest(
+              ResponseTypes(ResponseType.Code),
+              ClientId(),
+              Some(RedirectUri.parseWithException("http://localhost/test1?test=1")),
+              Scopes.empty,
+              None
+            )
+            val client = Client(
+              ClientId(),
+              ClientType.Confidential,
+              ClientSecret("XXX"),
+              RedirectUris(
+                Vector(
+                  RedirectUri.parseWithException("http://localhost/test1?test=1")
+                )
+              )
+            )
+            val result = client.redirectUris.toVector.contains(req.redirectUri.get)
+            assert(result)
+          }
+
+          {
+            val req = AuthorizationCodeRequest(
+              ResponseTypes(ResponseType.Code),
+              ClientId(),
+              Some(RedirectUri.parseWithException("http://localhost/test1")),
+              Scopes.empty,
+              None
+            )
+            val client = Client(
+              ClientId(),
+              ClientType.Confidential,
+              ClientSecret("XXX"),
+              RedirectUris(
+                Vector(
+                  RedirectUri.parseWithException("http://localhost/test1")
+                )
+              )
+            )
+            val result = client.redirectUris.toVector.contains(req.redirectUri.get)
+            assert(result)
+          }
+        }
       }
     }
 

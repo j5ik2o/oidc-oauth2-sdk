@@ -1,13 +1,13 @@
 package com.github.j5ik2o.authnauthz.oidc.hybrid
 
-import com.github.j5ik2o.authnauthz.oauth2.{ ClientId, RedirectURI, State }
+import com.github.j5ik2o.authnauthz.oauth2.{ ClientId, RedirectUri, State }
 import com.github.j5ik2o.authnauthz.oidc._
 
 final case class AuthenticationHybridRequest(
     // OAuth2
     responseTypes: ResponseTypes,
     clientId: ClientId,
-    redirectURI: RedirectURI,
+    redirectURI: RedirectUri,
     scopes: Scopes,
     state: Option[State],
     // OpenID Connect

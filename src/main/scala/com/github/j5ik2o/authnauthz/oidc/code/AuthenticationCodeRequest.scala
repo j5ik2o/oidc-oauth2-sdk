@@ -6,7 +6,7 @@ final case class AuthenticationCodeRequest(
     // OAuth2
     responseTypes: oidc.ResponseTypes,
     clientId: oauth2.ClientId,
-    redirectURI: oauth2.RedirectURI,
+    redirectURI: oauth2.RedirectUri,
     scopes: oidc.Scopes,
     state: Option[oauth2.State],
     // OpenID Connect

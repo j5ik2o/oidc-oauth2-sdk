@@ -1,11 +1,11 @@
 package com.github.j5ik2o.authnauthz.oidc.code
 
-import com.github.j5ik2o.authnauthz.oauth2.{ AuthorizationCode, ClientId, GrantType, RedirectURI }
+import com.github.j5ik2o.authnauthz.oauth2.{ AuthorizationCode, ClientId, GrantType, RedirectUri }
 
 final case class TokenCodeIssueRequest(
     grantType: GrantType,
     code: AuthorizationCode,
-    redirectURI: RedirectURI,
+    redirectURI: RedirectUri,
     clientId: ClientId
 ) {
   require(grantType == GrantType.AuthorizationCode)

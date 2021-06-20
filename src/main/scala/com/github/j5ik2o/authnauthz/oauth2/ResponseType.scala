@@ -22,6 +22,9 @@ object ResponseTypes {
     new ResponseTypes(values.toSet)
   }
 
+  def parseWithException(text: Option[String]): ResponseTypes =
+    parse(text).fold(throw _, identity)
+
   def parse(text: Option[String]): Either[OAuth2Exception, ResponseTypes] = {
     text match {
       case None =>

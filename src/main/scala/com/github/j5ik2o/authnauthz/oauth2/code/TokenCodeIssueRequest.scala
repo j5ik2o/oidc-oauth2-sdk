@@ -5,7 +5,7 @@ import com.github.j5ik2o.authnauthz.oauth2.{
   ClientId,
   ClientSecret,
   GrantType,
-  RedirectURI,
+  RedirectUri,
   TokenIssueRequest
 }
 
@@ -16,7 +16,7 @@ import com.github.j5ik2o.authnauthz.oauth2.{
 final case class TokenCodeIssueRequest(
     grantType: GrantType,
     code: AuthorizationCode,
-    redirectURI: RedirectURI,
+    redirectURI: RedirectUri,
     clientId: ClientId,
     clientSecret: ClientSecret
 ) extends TokenIssueRequest {
