@@ -257,7 +257,7 @@ class OAuth2Spec extends AnyFreeSpec {
                 )
               )
             )
-            assert(authorizationCodeRequest.validateRedirectUri(client))
+            assert(authorizationCodeRequest.validateRedirectUri(client) == Right(()))
           }
 
           /** 認可リクエスト中にリダイレクトURIが含まれており, かつリダイレクトURIが事前登録されている場合, [RFC3986] セクション6に示すとおり,
