@@ -76,8 +76,11 @@ object ValidationException {
         cause
       )
 
-  case class ValidateExceptions(exs: Vector[ValidationException], state: Option[State], cause: Option[Throwable] = None)
-      extends ValidationException(ErrorType.InvalidRequest, s"Exceptions. exs = $exs", state, cause)
+  case class ValidateExceptions(
+      exs: Vector[ValidationException],
+      override val state: Option[State],
+      cause: Option[Throwable] = None
+  ) extends ValidationException(ErrorType.InvalidRequest, s"Exceptions. exs = $exs", state, cause)
 
 }
 
@@ -173,14 +176,17 @@ final case class AuthorizationCodeRequestValid(
 object AuthorizationCodeRequest {
 
   implicit object AuthorizationCodeRequestHandler
-      extends RequestHandler[AuthorizationCodeRequestPlain, (ReservedAuthorization, AuthorizationCodeResponse)] {
+      extends RequestHandler[
+        AuthorizationCodeRequestPlain,
+        (Option[ReservedAuthorization], AuthorizationCodeResponse)
+      ] {
 
     override type Output[A] = Id[A]
 
     override def execute(
         self: AuthorizationCodeRequestPlain,
         client: Client
-    ): Output[(ReservedAuthorization, AuthorizationCodeResponse)] = {
+    ): Output[(Option[ReservedAuthorization], AuthorizationCodeResponse)] = {
       self
         .validate(client, forceFull = false) match {
         case Right(valid) =>
@@ -195,9 +201,10 @@ object AuthorizationCodeRequest {
             Instant.now()
           )
           val response = AuthorizationSuccessfulCodeResponse(code, valid.state)
-          (reservedAuthorization, response)
+          (Some(reservedAuthorization), response)
         case Left(ex) =>
-          AuthorizationFailureCodeResponse(ex.errorType, Some(ex.getMessage), None, ex.state)
+          val response = AuthorizationFailureCodeResponse(ex.errorType, Some(ex.getMessage), None, ex.state)
+          (None, response)
       }
     }
   }
