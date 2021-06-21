@@ -9,81 +9,6 @@ import java.text.ParseException
 import java.time.Instant
 import scala.util.{ Failure, Success, Try }
 
-sealed abstract class ValidationException(
-    val errorType: ErrorType,
-    message: String,
-    val state: Option[State],
-    cause: Option[Throwable]
-) extends Exception(message, cause.orNull)
-
-object ValidationException {
-
-  case class ClientIdNotMatchException(
-      clientId: String,
-      override val state: Option[State],
-      cause: Option[Throwable] = None
-  ) extends ValidationException(
-        ErrorType.InvalidRequest,
-        s"ClientId is not match. clientId = $clientId",
-        state,
-        cause
-      )
-
-  case class ResponseTypeInvalidException(
-      responseType: String,
-      override val state: Option[State],
-      cause: Option[Throwable] = None
-  ) extends ValidationException(
-        ErrorType.InvalidRequest,
-        s"ResponseType is invalid. responseType = $responseType",
-        state,
-        cause
-      )
-
-  case class RedirectUriNotFoundException(
-      client: Client,
-      redirectUri: Option[String],
-      override val state: Option[State],
-      cause: Option[Throwable] = None
-  ) extends ValidationException(
-        ErrorType.InvalidRequest,
-        s"RedirectUri is not found. clientId = ${client.clientId}, redirectUri = $redirectUri",
-        state,
-        cause
-      )
-
-  case class RedirectUriInvalidException(
-      client: Client,
-      redirectUri: String,
-      override val state: Option[State],
-      cause: Option[Throwable] = None
-  ) extends ValidationException(
-        ErrorType.InvalidRequest,
-        s"RedirectUri is invalid. clientId = ${client.clientId}, redirectUri = $redirectUri",
-        state,
-        cause
-      )
-
-  case class RedirectUriNotMatchException(
-      client: Client,
-      redirectUri: RedirectUri,
-      override val state: Option[State],
-      cause: Option[Throwable] = None
-  ) extends ValidationException(
-        ErrorType.InvalidRequest,
-        s"RedirectUri is not match. clientId = ${client.clientId}, redirectUri = $redirectUri",
-        state,
-        cause
-      )
-
-  case class ValidateExceptions(
-      exs: Vector[ValidationException],
-      override val state: Option[State],
-      cause: Option[Throwable] = None
-  ) extends ValidationException(ErrorType.InvalidRequest, s"Exceptions. exs = $exs", state, cause)
-
-}
-
 sealed trait AuthorizationCodeRequest
 
 case class AuthorizationCodeRequestPlain(
@@ -190,9 +115,9 @@ object AuthorizationCodeRequest {
       self
         .validate(client, forceFull = false) match {
         case Right(valid) =>
-          val code = AuthorizationCode()
+          val refKey = RefKey()
           val reservedAuthorization = ReservedAuthorization(
-            code,
+            refKey,
             client.clientId,
             valid.responseTypes,
             valid.redirectUri.get,
@@ -200,10 +125,27 @@ object AuthorizationCodeRequest {
             valid.state,
             Instant.now()
           )
-          val response = AuthorizationSuccessfulCodeResponse(code, valid.state)
+          val response = AuthorizationSuccessfulCodeResponse(
+            BehaviorType.Interaction,
+            refKey,
+            client.clientId,
+            client.clientName,
+            valid.redirectUri.get,
+            valid.scopes,
+            valid.state
+          )
           (Some(reservedAuthorization), response)
         case Left(ex) =>
-          val response = AuthorizationFailureCodeResponse(ex.errorType, Some(ex.getMessage), None, ex.state)
+          val response =
+            AuthorizationFailureCodeResponse(
+              BehaviorType.BadRequest,
+              client.clientId,
+              self.redirectUri,
+              ex.errorType,
+              Some(ex.getMessage),
+              None,
+              ex.state
+            )
           (None, response)
       }
     }
