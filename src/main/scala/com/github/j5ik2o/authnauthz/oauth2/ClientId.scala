@@ -23,4 +23,9 @@ object ClientId {
     val value = UUID.randomUUID().toString
     new ClientId(value, value.length)
   }
+
+  def of(value: String): ClientId = {
+    new ClientId(value, value.length)
+  }
+
 }

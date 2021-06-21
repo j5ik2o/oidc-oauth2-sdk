@@ -4,28 +4,25 @@ import com.github.j5ik2o.uri.Uri
 
 import java.text.ParseException
 
-class RedirectUri(val uri: Uri) {
-  def isFull: Boolean    = uri.path.nonEmpty || uri.query.nonEmpty
+case class RedirectUri(uri: Uri) {
+  def isFull: Boolean    = uri.query.nonEmpty
   def isPartial: Boolean = uri.path.isEmpty || uri.query.isEmpty
 
-  def canEqual(obj: Any): Boolean = obj.isInstanceOf[RedirectUri]
-
-  override def equals(obj: Any): Boolean = obj match {
-    case that: RedirectUri if isFull =>
-      println(s"Full: this = $this, that = $that")
-      (that canEqual this) && uri.toString() == that.toString
+  def compareAndMatch(redirectUri: RedirectUri, forceFull: Boolean): Boolean = redirectUri match {
+    case that: RedirectUri if forceFull || isFull =>
+      val b = uri.asString == that.uri.asString
+      println(s"Full: this = $this, ${uri.asString}, that = $that, ${that.uri.asString}, b = $b")
+      (that canEqual this) && b
     case that: RedirectUri if isPartial =>
-      println(s"Partial: this = $this, that = $that")
-      (that canEqual this) &&
-      (uri.scheme == that.uri.scheme &&
-      uri.authority == that.uri.authority &&
-      uri.path == that.uri.path)
+      val b = uri.scheme == that.uri.scheme &&
+        uri.authority == that.uri.authority &&
+        uri.path == that.uri.path
+      println(s"Partial: this = $this, ${Seq(uri.scheme.asString, uri.authority.asString, uri.path.asString)
+        .mkString(",")} that = $that, ${Seq(that.uri.scheme.asString, that.uri.authority.asString, that.uri.path.asString)
+        .mkString(",")} b = $b")
+      (that canEqual this) && b
     case _ => false
   }
-
-  override def hashCode(): Int = uri.hashCode()
-
-  override def toString: String = uri.toString()
 
 }
 
@@ -58,6 +55,9 @@ case class RedirectUris(values: Vector[RedirectUri]) {
   def nonEmpty: Boolean             = !isEmpty
   def isSingle: Boolean             = values.size == 1
   def isMultiple: Boolean           = !isSingle
-  def toVector: Vector[RedirectUri] = values.toVector
+  def toVector: Vector[RedirectUri] = values
   def hasPartial: Boolean           = values.exists(_.isPartial)
+
+  def contains(redirectUri: RedirectUri, forceFull: Boolean): Boolean =
+    values.exists(value => redirectUri.compareAndMatch(value, forceFull))
 }

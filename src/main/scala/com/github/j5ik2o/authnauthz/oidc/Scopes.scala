@@ -12,7 +12,7 @@ object Scope extends Enum[Scope] {
   case class Value(value: String) extends Scope(value)
 }
 
-final case class Scopes(values: Vector[Scope]) {
+final case class Scopes(values: Set[Scope]) {
 
   def toOAuth2: oauth2.Scopes = {
     oauth2.Scopes(values.map(s => oauth2.Scope(s.entryName)))

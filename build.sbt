@@ -65,8 +65,9 @@ val root = (project in file("."))
     name := "oidc-oauth2-sdk",
     libraryDependencies ++= Seq(
       "com.beachape"      %% "enumeratum" % Versions.enumeratumVersion,
+      "org.typelevel"     %% "cats-core"  % "2.6.1",
       "org.scalatest"     %% "scalatest"  % "3.2.9" % Test,
-      "com.github.j5ik2o" %% "uri-scala"  % "1.0.1"
+      "com.github.j5ik2o" %% "uri-scala"  % "1.0.1+2-dc19a68d-SNAPSHOT"
     )
   )
 

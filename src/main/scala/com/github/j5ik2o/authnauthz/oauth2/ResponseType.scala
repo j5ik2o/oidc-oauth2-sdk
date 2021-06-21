@@ -28,15 +28,16 @@ object ResponseTypes {
   def parse(text: Option[String]): Either[OAuth2Exception, ResponseTypes] = {
     text match {
       case None =>
-        Left(new OAuth2Exception(ErrorType.InvalidRequest))
+        Left(OAuth2Exception(ErrorType.InvalidRequest))
       case Some("") =>
-        Left(new OAuth2Exception(ErrorType.InvalidRequest))
+        Left(OAuth2Exception(ErrorType.InvalidRequest))
       case Some(values) =>
         val responseTypeTexts = values.split(" ")
-        if (!responseTypeTexts.exists(ResponseType.values.contains))
-          Left(new OAuth2Exception(ErrorType.UnsupportedResponseType))
-        else
+
+        if (responseTypeTexts.exists(s => ResponseType.withNameOption(s).nonEmpty))
           Right(ResponseTypes(responseTypeTexts.map(ResponseType.withName).toSet))
+        else
+          Left(OAuth2Exception(ErrorType.UnsupportedResponseType))
     }
   }
 
