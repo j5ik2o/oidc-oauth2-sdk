@@ -1,6 +1,6 @@
 package com.github.j5ik2o.authnauthz.oauth2
 
-case class Client(
+final case class Client(
     clientId: ClientId,
     clientName: ClientName,
     clientType: ClientType,

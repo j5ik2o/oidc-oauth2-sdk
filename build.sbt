@@ -40,12 +40,8 @@ lazy val baseSettings = Seq(
     ) ++ crossScalacOptions(scalaVersion.value)
   ),
   resolvers ++= Seq(
-    Resolver.sonatypeRepo("snapshots"),
-    Resolver.sonatypeRepo("releases")
+    Resolver.sonatypeRepo("snapshots")
   ),
-  ThisBuild / scalafixScalaBinaryVersion := CrossVersion.binaryScalaVersion(scalaVersion.value),
-  semanticdbEnabled := true,
-  semanticdbVersion := scalafixSemanticdb.revision,
   Test / publishArtifact := false,
   Test / fork := true,
   Test / parallelExecution := false,
@@ -57,6 +53,13 @@ lazy val baseSettings = Seq(
       old
     }
   }
+//  semanticdbEnabled := true,
+//  semanticdbVersion := scalafixSemanticdb.revision
+  // Remove me when scalafix is stable and feature-complete on Scala 3
+//  ThisBuild / scalafixScalaBinaryVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
+//    case Some((2, _)) => CrossVersion.binaryScalaVersion(scalaVersion.value)
+//    case _            => CrossVersion.binaryScalaVersion(Versions.scala212Version)
+//  })
 )
 
 val root = (project in file("."))
@@ -64,10 +67,11 @@ val root = (project in file("."))
   .settings(
     name := "oidc-oauth2-sdk",
     libraryDependencies ++= Seq(
-      "com.beachape"      %% "enumeratum" % Versions.enumeratumVersion,
-      "org.typelevel"     %% "cats-core"  % "2.6.1",
-      "org.scalatest"     %% "scalatest"  % "3.2.9" % Test,
-      "com.github.j5ik2o" %% "uri-scala"  % "1.0.1+2-dc19a68d-SNAPSHOT"
+      "com.beachape"       %% "enumeratum"    % Versions.enumeratumVersion,
+      "org.typelevel"      %% "cats-core"     % "2.6.1",
+      "org.scalatest"      %% "scalatest"     % "3.2.9" % Test,
+      "com.github.j5ik2o"  %% "uri-scala"     % "1.0.3",
+      "org.wvlet.airframe" %% "airframe-ulid" % "21.7.0"
     )
   )
 

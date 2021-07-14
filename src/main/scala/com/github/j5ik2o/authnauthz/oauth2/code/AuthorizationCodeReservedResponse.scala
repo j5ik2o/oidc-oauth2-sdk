@@ -2,12 +2,12 @@ package com.github.j5ik2o.authnauthz.oauth2.code
 
 import com.github.j5ik2o.authnauthz.oauth2._
 
-sealed trait AuthorizationCodeResponse {
+sealed trait AuthorizationCodeReservedResponse {
   def behaviorType: BehaviorType
   def clientId: ClientId
 }
 
-final case class AuthorizationSuccessfulCodeResponse(
+final case class AuthorizationCodeSuccessfulResponse(
     behaviorType: BehaviorType,
     refKey: RefKey,
     clientId: ClientId,
@@ -15,9 +15,9 @@ final case class AuthorizationSuccessfulCodeResponse(
     redirectUri: RedirectUri,
     scopes: Scopes,
     state: Option[State]
-) extends AuthorizationCodeResponse
+) extends AuthorizationCodeReservedResponse
 
-final case class AuthorizationFailureCodeResponse(
+final case class AuthorizationCodeFailureResponse(
     behaviorType: BehaviorType,
     clientId: ClientId,
     redirectUri: Option[String],
@@ -25,4 +25,4 @@ final case class AuthorizationFailureCodeResponse(
     errorDescription: Option[String],
     errorURI: Option[String],
     state: Option[State]
-) extends AuthorizationCodeResponse
+) extends AuthorizationCodeReservedResponse

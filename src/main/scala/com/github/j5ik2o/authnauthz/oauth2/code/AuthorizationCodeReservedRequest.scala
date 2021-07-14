@@ -9,15 +9,13 @@ import java.text.ParseException
 import java.time.Instant
 import scala.util.{ Failure, Success, Try }
 
-sealed trait AuthorizationCodeRequest
-
-case class AuthorizationCodeRequestPlain(
+final case class AuthorizationCodeRequest(
     responseTypes: Set[String],
     clientId: String,
     redirectUri: Option[String],
     scopes: Set[String],
     state: Option[String]
-) extends AuthorizationCodeRequest {
+) {
   type ValidationResult[A] = Either[ValidationException, A]
 
   protected def validateState: ValidationResult[Option[State]] = {
@@ -96,28 +94,28 @@ final case class AuthorizationCodeRequestValid(
     redirectUri: Option[RedirectUri],
     scopes: Scopes,
     state: Option[State]
-) extends AuthorizationCodeRequest
+)
 
 object AuthorizationCodeRequest {
 
   implicit object AuthorizationCodeRequestHandler
       extends RequestHandler[
-        AuthorizationCodeRequestPlain,
-        (Option[ReservedAuthorization], AuthorizationCodeResponse)
+        AuthorizationCodeRequest,
+        (Option[ReservedAuthorization], AuthorizationCodeReservedResponse)
       ] {
 
     override type Output[A] = Id[A]
 
     override def execute(
-        self: AuthorizationCodeRequestPlain,
+        self: AuthorizationCodeRequest,
         client: Client
-    ): Output[(Option[ReservedAuthorization], AuthorizationCodeResponse)] = {
+    ): Output[(Option[ReservedAuthorization], AuthorizationCodeReservedResponse)] = {
       self
         .validate(client, forceFull = false) match {
         case Right(valid) =>
           val refKey = RefKey()
           val reservedAuthorization = ReservedAuthorization(
-            refKey,
+            ReservedAuthorizationId(refKey),
             client.clientId,
             valid.responseTypes,
             valid.redirectUri.get,
@@ -125,7 +123,7 @@ object AuthorizationCodeRequest {
             valid.state,
             Instant.now()
           )
-          val response = AuthorizationSuccessfulCodeResponse(
+          val response = AuthorizationCodeSuccessfulResponse(
             BehaviorType.Interaction,
             refKey,
             client.clientId,
@@ -137,7 +135,7 @@ object AuthorizationCodeRequest {
           (Some(reservedAuthorization), response)
         case Left(ex) =>
           val response =
-            AuthorizationFailureCodeResponse(
+            AuthorizationCodeFailureResponse(
               BehaviorType.BadRequest,
               client.clientId,
               self.redirectUri,

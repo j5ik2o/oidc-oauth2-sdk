@@ -4,7 +4,7 @@ import com.github.j5ik2o.uri.Uri
 
 import java.text.ParseException
 
-case class RedirectUri(uri: Uri) {
+final case class RedirectUri(uri: Uri) {
   def isFull: Boolean    = uri.query.nonEmpty
   def isPartial: Boolean = uri.path.isEmpty || uri.query.isEmpty
 
@@ -50,7 +50,7 @@ object RedirectUri {
 
 }
 
-case class RedirectUris(values: Vector[RedirectUri]) {
+final case class RedirectUris(values: Vector[RedirectUri]) {
   def isEmpty: Boolean              = values.isEmpty
   def nonEmpty: Boolean             = !isEmpty
   def isSingle: Boolean             = values.size == 1
